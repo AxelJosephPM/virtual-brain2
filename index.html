@@ -1,131 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<style>
-body { margin:0; padding:0; overflow:hidden; background:#1e1e1e; }
-.node { cursor: pointer; }
-.link { stroke: #999; stroke-opacity: 0.6; }
-text { font-family: Arial, sans-serif; font-size: 12px; fill: #fff; pointer-events: none; }
-svg { width: 100vw; height: 100vh; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mind Map</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    svg {
+      width: 100vw;
+      height: 100vh;
+    }
+    circle {
+      fill: #7C3AED; /* color morado estilo Obsidian */
+      cursor: pointer;
+      transition: fill 0.2s;
+    }
+    circle:hover {
+      fill: #A78BFA; /* morado claro al pasar por encima */
+    }
+    text {
+      font-family: sans-serif;
+      font-size: 14px;
+      pointer-events: none;
+      fill: black;
+    }
+  </style>
 </head>
 <body>
-<div id="graph"></div>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script>
-// Nodos
-var nodes = [
-  {id:"plan_teoria_de_momentos.html", label:"Plan Teoría de Momentos", color:"#ff6347"},
-  {id:"plan_algebra_de_lie.html", label:"Plan Álgebra de Lie", color:"#1e90ff"},
-  {id:"hall_lie_algebras.html", label:"Hall Lie Algebras", color:"#32cd32"},
-  {id:"plan_espacios_cocientes.html", label:"Plan Espacios Cocientes", color:"#ffa500"},
-  {id:"evans – partial differential equations.html", label:"Evans PDE", color:"#ff69b4"},
-  {id:"introduction to mechanics and symmetry - jerry e. marsden.html", label:"Introduction Mechanics", color:"#8a2be2"},
-  {id:"on quotient spaces — peter g. bergmann (1973).html", label:"On Quotient Spaces", color:"#00ced1"},
-  {id:"federer – geometric measure theory.html", label:"Federer GMT", color:"#adff2f"},
-  {id:"mathematics for theoretical physics — jean claude dutailly.html", label:"Math Theoretical Physics", color:"#ff4500"},
-  {id:"equivalence relations and quotient spaces — albert s. schwarz.html", label:"Equivalence & Quotient Spaces", color:"#20b2aa"},
-  {id:"cohn – measure theory.html", label:"Cohn Measure Theory", color:"#ff1493"},
-  {id:"quotient maps and configuration spaces of hard disks.html", label:"Quotient Maps Hard Disks", color:"#7fff00"}
-];
+  <svg></svg>
+  <script>
+    const nodes = [
+      { id: "Cohn – Measure Theory", link: "cohn – measure theory.html" },
+      { id: "Equivalence Relations and Quotient Spaces — Albert S. Schwarz", link: "equivalence relations and quotient spaces — albert s. schwarz.html" },
+      { id: "Evans – Partial Differential Equations", link: "evans – partial differential equations.html" },
+      { id: "Federer – Geometric Measure Theory", link: "federer – geometric measure theory.html" },
+      { id: "Hall – Lie Algebras", link: "hall_lie_algebras.html" },
+      { id: "Introduction to Mechanics and Symmetry - Jerry E. Marsden", link: "introduction to mechanics and symmetry - jerry e. marsden.html" },
+      { id: "Mathematics for Theoretical Physics — Jean Claude Dutailly", link: "mathematics for theoretical physics — jean claude dutailly.html" },
+      { id: "On Quotient Spaces — Peter G. Bergmann (1973)", link: "on quotient spaces — peter g. bergmann (1973).html" },
+      { id: "Quotient maps and configuration spaces of hard disks", link: "quotient maps and configuration spaces of hard disks.html" },
+      { id: "Plan Algebra de Lie", link: "plan_algebra_de_lie.html" },
+      { id: "Plan Espacios Cocientes", link: "plan_espacios_cocientes.html" },
+      { id: "Plan Teoría de Momentos", link: "plan_teoria_de_momentos.html" }
+    ];
 
-// Enlaces
-var links = [
-  {source:"plan_teoria_de_momentos.html", target:"cohn – measure theory.html"},
-  {source:"plan_teoria_de_momentos.html", target:"federer – geometric measure theory.html"},
-  {source:"plan_teoria_de_momentos.html", target:"evans – partial differential equations.html"},
-  {source:"plan_algebra_de_lie.html", target:"hall_lie_algebras.html"},
-  {source:"hall_lie_algebras.html", target:"plan_algebra_de_lie.html"},
-  {source:"plan_espacios_cocientes.html", target:"equivalence relations and quotient spaces — albert s. schwarz.html"},
-  {source:"plan_espacios_cocientes.html", target:"on quotient spaces — peter g. bergmann (1973).html"},
-  {source:"plan_espacios_cocientes.html", target:"quotient maps and configuration spaces of hard disks.html"},
-  {source:"plan_espacios_cocientes.html", target:"introduction to mechanics and symmetry - jerry e. marsden.html"},
-  {source:"plan_espacios_cocientes.html", target:"mathematics for theoretical physics — jean claude dutailly.html"},
-  {source:"evans – partial differential equations.html", target:"plan_teoria_de_momentos.html"},
-  {source:"introduction to mechanics and symmetry - jerry e. marsden.html", target:"plan_espacios_cocientes.html"},
-  {source:"on quotient spaces — peter g. bergmann (1973).html", target:"plan_espacios_cocientes.html"},
-  {source:"federer – geometric measure theory.html", target:"plan_teoria_de_momentos.html"},
-  {source:"mathematics for theoretical physics — jean claude dutailly.html", target:"plan_espacios_cocientes.html"},
-  {source:"equivalence relations and quotient spaces — albert s. schwarz.html", target:"plan_espacios_cocientes.html"},
-  {source:"cohn – measure theory.html", target:"plan_teoria_de_momentos.html"},
-  {source:"quotient maps and configuration spaces of hard disks.html", target:"plan_espacios_cocientes.html"}
-];
+    const links = [];
 
-var width = window.innerWidth;
-var height = window.innerHeight;
+    const svg = d3.select("svg");
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-var svg = d3.select("#graph")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
+    const simulation = d3.forceSimulation(nodes)
+      .force("charge", d3.forceManyBody().strength(-300))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collision", d3.forceCollide().radius(60));
 
-var g = svg.append("g");
+    const link = svg.append("g")
+      .attr("stroke", "#999")
+      .attr("stroke-opacity", 0.6)
+      .selectAll("line")
+      .data(links)
+      .enter().append("line")
+      .attr("stroke-width", 1);
 
-// Zoom con rueda del ratón
-svg.call(d3.zoom().scaleExtent([0.1,4]).on("zoom", (event) => {
-  g.attr("transform", event.transform);
-}));
+    const node = svg.append("g")
+      .selectAll("circle")
+      .data(nodes)
+      .enter().append("circle")
+      .attr("r", 30)
+      .on("click", (event, d) => {
+        window.location.href = d.link;
+      });
 
-// Simulación
-var simulation = d3.forceSimulation(nodes)
-                   .force("link", d3.forceLink(links).id(d=>d.id).distance(150))
-                   .force("charge", d3.forceManyBody().strength(-300))
-                   .force("center", d3.forceCenter(width/2,height/2))
-                   .on("tick", ticked);
+    const label = svg.append("g")
+      .selectAll("text")
+      .data(nodes)
+      .enter().append("text")
+      .text(d => d.id)
+      .attr("text-anchor", "middle")
+      .attr("dy", 5);
 
-// Líneas
-var link = g.append("g").attr("class","links")
-            .selectAll("line")
-            .data(links)
-            .enter()
-            .append("line").attr("class","link");
+    simulation.on("tick", () => {
+      node.attr("cx", d => d.x)
+          .attr("cy", d => d.y);
 
-// Nodos
-var node = g.append("g").attr("class","nodes")
-            .selectAll("g")
-            .data(nodes)
-            .enter()
-            .append("g")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended))
-            .on("click", (event,d)=>{
-                window.location.href = d.id; // abrir HTML
-            });
+      label.attr("x", d => d.x)
+           .attr("y", d => d.y);
 
-node.append("circle")
-    .attr("r", 15)
-    .attr("fill", d=>d.color);
+      link.attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+    });
 
-node.append("text")
-    .attr("x", 20)
-    .attr("y", 5)
-    .text(d=>d.label);
+    // Zoom + drag global
+    const zoom = d3.zoom()
+      .scaleExtent([0.1, 4])
+      .on("zoom", (event) => {
+        svg.selectAll("g").attr("transform", event.transform);
+      });
 
-function ticked(){
-  link.attr("x1", d=>d.source.x)
-      .attr("y1", d=>d.source.y)
-      .attr("x2", d=>d.target.x)
-      .attr("y2", d=>d.target.y);
-
-  node.attr("transform", d=>`translate(${d.x},${d.y})`);
-}
-
-function dragstarted(event,d){
-  if(!event.active) simulation.alphaTarget(0.3).restart();
-  d.fx=d.x; d.fy=d.y;
-}
-
-function dragged(event,d){
-  d.fx=event.x; d.fy=event.y;
-}
-
-function dragended(event,d){
-  if(!event.active) simulation.alphaTarget(0);
-  d.fx=null; d.fy=null;
-}
-</script>
+    svg.call(zoom);
+  </script>
 </body>
 </html>
