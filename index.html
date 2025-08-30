@@ -1,105 +1,165 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { margin:0; padding:0; overflow:hidden; background:#1e1e1e; }
-    .node { cursor: pointer; }
-    .link { stroke: #999; stroke-opacity: 0.6; }
-    text { font-family: Arial, sans-serif; font-size: 12px; fill: #fff; pointer-events: none; }
-    svg { width: 100vw; height: 100vh; }
-  </style>
-</head>
-<body>
-  <div id="graph"></div>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  <script>
-    // Datos de ejemplo
-    var nodes = [
-      {id: "nota1.md", label: "Nota 1", color:"#ff6347"},
-      {id: "nota2.md", label: "Nota 2", color:"#1e90ff"},
-      {id: "nota3.md", label: "Nota 3", color:"#32cd32"}
-    ];
 
-    var links = [
-      {source: "nota1.md", target: "nota2.md"},
-      {source: "nota2.md", target: "nota3.md"}
-    ];
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body { margin: 0; padding: 0; overflow: hidden; background-color: #1e1e1e; }
+            .node { cursor: move; }
+            .link { stroke: #999; stroke-opacity: 0.6; }
+            text { font-family: Arial, sans-serif; font-size: 12px; pointer-events: none; fill: #fff; }
+            svg { width: 100vw; height: 100vh; }
+        </style>
+    </head>
+    <body>
+        <div id="graph"></div>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script>
+            var nodes = [{"id": "plan_teoria_de_momentos.md", "label": "Plan_teoria_de_momentos", "content": "# Plan de Estudio: Teor\u00eda sobre Momentos\n\nRecordatorio de lectura \u2013 Medidas, masa y aplicaciones\n\nCohn \u2013 Measure Theory\n\u2192 Construye las bases: qu\u00e9 es una medida, c\u00f3mo se define y c\u00f3mo se relaciona con integraci\u00f3n y probabilidad. La base conceptual y rigurosa.\n\nFederer \u2013 Geometric Measure Theory\n\u2192 Donde aparece el concepto de masa como medida geom\u00e9trica. Ense\u00f1a a medir \u00e1reas, vol\u00famenes y superficies irregulares con herramientas de medida.\n\nEvans \u2013 Partial Differential Equations\n\u2192 Muestra c\u00f3mo las medidas (y en particular las de masa) se aplican en la f\u00edsica y en las ecuaciones diferenciales que modelan fen\u00f3menos reales.\n\nEn resumen:\nLeerlos en este orden me permitir\u00e1:\n\nEntender las medidas en general.\n\nVer c\u00f3mo se aplican para definir masa y geometr\u00eda.\n\nConectar esas ideas con aplicaciones f\u00edsicas reales.\n\n# \ud83d\udcd6 Plan de lectura progresivo \u2013 Medidas, masa y aplicaciones\n\n## Etapa 1 \u2013 Fundamentos (Cohn)\n\n### \ud83d\udc49 Objetivo: entender qu\u00e9 es una medida y c\u00f3mo se construye.\n\nCap. 1\u20132: Introducci\u00f3n a medidas y funciones medibles.\n\nCap. 3: Teorema de Radon\u2013Nikodym (clave para densidades).\n\nCap. 5: Integraci\u00f3n de Lebesgue (c\u00f3mo se mide con n\u00fameros).\n\n(No necesitas todo el libro ahora, solo la base que har\u00e1 que Federer sea entendible.)\n\n## Etapa 2 \u2013 Geometr\u00eda y masa (Federer)\n\n### \ud83d\udc49 Objetivo: ver c\u00f3mo la noci\u00f3n abstracta de medida se usa para medir objetos geom\u00e9tricos.\n\nCap. 1: Variedades rectificables.\n\nCap. 2: La medida de Hausdorff (extensi\u00f3n natural de volumen/\u00e1rea).\n\nCap. 3: Corrientes y masa \u2192 aqu\u00ed aparece la masa como medida asociada a objetos geom\u00e9tricos.\n\n(Lo importante es que empieces a ver c\u00f3mo \"medir\" deja de ser probabilidad y se vuelve geometr\u00eda real: \u00e1reas, vol\u00famenes, superficies rugosas.)\n\n## Etapa 3 \u2013 Aplicaci\u00f3n f\u00edsica (Evans)\n\n### \ud83d\udc49 Objetivo: ver c\u00f3mo estas medidas aparecen en ecuaciones diferenciales reales.\n\nCap. 1\u20132: Conceptos b\u00e1sicos de PDE (ecuaciones de difusi\u00f3n, onda, etc.).\n\nCap. 5: Teor\u00eda d\u00e9bil de soluciones \u2192 conecta directamente con medidas.\n\nCap. 6: Medidas de energ\u00eda y m\u00e9todos de variaci\u00f3n \u2192 ah\u00ed est\u00e1 el puente con Federer.\n\n(Aqu\u00ed es donde ves, por ejemplo, c\u00f3mo una medida de masa se usa en el estudio de difusi\u00f3n de calor, fluidos o tensiones en elasticidad.)\n\n## \ud83d\udd04 Din\u00e1mica :\n\nLee Cohn Cap. 1\u20132 \u2192 luego pasa al inicio de Federer Cap. 1 para ver la aplicaci\u00f3n.\n\nVuelve a Cohn Cap. 3 \u2192 conecta con Federer Cap. 2.\n\nCuando ya tengas Federer Cap. 3 (masa geom\u00e9trica), pasa a Evans Cap. 5 para ver el uso f\u00edsico.\n\n## \ud83d\udcda Libros asociados\n- [[Cohn \u2013 Measure Theory]]\n- [[Federer \u2013 Geometric Measure Theory]]\n- [[Evans \u2013 Partial Differential Equations]]", "link_count": 6, "color": "#7f7f7f"}, {"id": "plan_algebra_de_lie.md", "label": "Plan_algebra_de_lie", "content": "# Plan de Estudio: \u00c1lgebra de Lie\n\n## \ud83c\udfaf Objetivo\nEntender la estructura algebraica y geom\u00e9trica de las \u00e1lgebras de Lie, con aplicaciones en mec\u00e1nica cu\u00e1ntica y simetr\u00edas f\u00edsicas.\n\n## \ud83d\udcda Libros asociados\n- [[Hall_Lie_Algebras]]\n\n## \u23f3 Duraci\u00f3n estimada\n4 meses\n\n## \ud83d\udd11 Notas de progreso\n- Mes 1: Fundamentos (grupos de Lie y representaciones b\u00e1sicas).\n- Mes 2: Teor\u00eda de representaciones.\n- Mes 3-4: Aplicaciones en mec\u00e1nica cu\u00e1ntica.\n", "link_count": 2, "color": "#7f7f7f"}, {"id": "hall_lie_algebras.md", "label": "Hall_lie_algebras", "content": "# Brian Hall \u2013 Lie Groups, Lie Algebras, and Representations\n\n## \ud83d\udcd6 Estado\n\ud83d\udcd8 Pendiente\n\n## \ud83d\udd0d Motivo de lectura\nBase te\u00f3rica s\u00f3lida para comprender las \u00e1lgebras de Lie y su papel en simetr\u00edas de la f\u00edsica.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Algebra_de_Lie]]\n\n## \ud83d\udcdd Notas clave\n- Cap. 1: Introducci\u00f3n a grupos de Lie.\n- Cap. 2: Definici\u00f3n y propiedades de \u00e1lgebras de Lie.", "link_count": 2, "color": "#7f7f7f"}, {"id": "plan_espacios_cocientes.md", "label": "Plan_espacios_cocientes", "content": "# Plan de Estudio: Espacios Cocientes\n## Estructura de estudio\n\n- **Empezar por Schwarz**, en mec\u00e1nica cu\u00e1ntica, para ver aplicaciones claras del espacio cociente en esa \u00e1rea.\n    \n- **Luego Bergmann**, para entender su rol en mec\u00e1nica cl\u00e1sica y sistemas con restricciones.\n    \n- **Continuar con ejemplos concretos**, como sistemas de part\u00edculas o teor\u00eda de campos.\n    \n- **Profundizar en la matem\u00e1tica de fondo** (Marsden, Dutailly) si desees dominar el formalismo riguroso.\n    \n- **Complementar con el ejemplo visual de Reddit** para ayudarte a asimilar el concepto de forma clara [link](https://www.reddit.com/r/learnmath/comments/16arwkg/does_anyone_have_a_good_youtube_playlist_to/).\n\n## \ud83d\udcda Libros asociados\n- [[Equivalence Relations and Quotient Spaces \u2014 Albert S. Schwarz]]\n- [[On Quotient Spaces \u2014 Peter G. Bergmann (1973)]]\n- [[Quotient maps and configuration spaces of hard disks]]\n- [[Introduction to Mechanics and Symmetry - Jerry E. Marsden]]\n- [[Mathematics for Theoretical Physics \u2014 Jean Claude Dutailly]]", "link_count": 11, "color": "#7f7f7f"}, {"id": "evans \u2013 partial differential equations.md", "label": "Evans \u2013 partial differential equations", "content": "Muestra c\u00f3mo las medidas (y en particular las de masa) se aplican en la f\u00edsica y en las ecuaciones diferenciales que modelan fen\u00f3menos reales.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Teoria_de_Momentos]]", "link_count": 2, "color": "#7f7f7f"}, {"id": "introduction to mechanics and symmetry - jerry e. marsden.md", "label": "Introduction to mechanics and symmetry - jerry e. marsden", "content": "Escriben sobre reducci\u00f3n hamiltoniana, donde se aplican espacios cocientes para simplificar sistemas con simetr\u00edas.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Espacios_Cocientes]]", "link_count": 2, "color": "#7f7f7f"}, {"id": "on quotient spaces \u2014 peter g. bergmann (1973).md", "label": "On quotient spaces \u2014 peter g. bergmann (1973)", "content": "Art\u00edculo cl\u00e1sico que trata espacios cocientes en el _formalismo can\u00f3nico con restricciones_, con ejemplos en mec\u00e1nica cl\u00e1sica, teor\u00eda relativista y otros contextos f\u00edsicos.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Espacios_Cocientes]]", "link_count": 2, "color": "#7f7f7f"}, {"id": "federer \u2013 geometric measure theory.md", "label": "Federer \u2013 geometric measure theory", "content": "Donde aparece el concepto de masa como medida geom\u00e9trica. Ense\u00f1a a medir \u00e1reas, vol\u00famenes y superficies irregulares con herramientas de medida.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Teoria_de_Momentos]]", "link_count": 2, "color": "#7f7f7f"}, {"id": "mathematics for theoretical physics \u2014 jean claude dutailly.md", "label": "Mathematics for theoretical physics \u2014 jean claude dutailly", "content": "Cubre teor\u00edas matem\u00e1ticas amplias (topolog\u00eda general, variedades, espacios funcionales\u2026) \u00fatiles para entender la construcci\u00f3n de espacios cocientes.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Espacios_Cocientes]]", "link_count": 2, "color": "#7f7f7f"}, {"id": "equivalence relations and quotient spaces \u2014 albert s. schwarz.md", "label": "Equivalence relations and quotient spaces \u2014 albert s. schwarz", "content": "**Cap\u00edtulo** incluido en _Quantum Field Theory and Topology_  \nExplica c\u00f3mo, en f\u00edsica, se considera equivalentes ciertos objetos:\n\n- Vectores proporcionales en el espacio de Hilbert representan el mismo estado cu\u00e1ntico.\n    \n- Potenciales vectoriales relacionados por una transformaci\u00f3n gauge definen el mismo campo electromagn\u00e9tico.  \n    Ideal para ver aplicaciones formales del concepto de espacio cociente en f\u00edsica moderna.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Espacios_Cocientes]]\n", "link_count": 2, "color": "#7f7f7f"}, {"id": "cohn \u2013 measure theory.md", "label": "Cohn \u2013 measure theory", "content": "Construye las bases: qu\u00e9 es una medida, c\u00f3mo se define y c\u00f3mo se relaciona con integraci\u00f3n y probabilidad. La base conceptual y rigurosa.\n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Teoria_de_Momentos]]", "link_count": 2, "color": "#7f7f7f"}, {"id": "quotient maps and configuration spaces of hard disks.md", "label": "Quotient maps and configuration spaces of hard disks", "content": "C\u00f3mo identificar simetr\u00edas f\u00edsicas y construir cocientes.\n\nArt\u00edculos como el de _Quotient maps and configuration spaces of hard disks_ presentan c\u00f3mo construir espacios de configuraci\u00f3n identificando simetr\u00edas (como permutaciones de part\u00edculas o reducci\u00f3n por el centro de masa), ilustrando el uso operativo del espacio cociente en sistemas cl\u00e1sicos.  \n\n## \ud83d\udd17 Asociado al plan\n[[Plan_Espacios_Cocientes]]", "link_count": 2, "color": "#7f7f7f"}];
+            var links = [{"source": "plan_teoria_de_momentos.md", "target": "cohn \u2013 measure theory.md"}, {"source": "plan_teoria_de_momentos.md", "target": "federer \u2013 geometric measure theory.md"}, {"source": "plan_teoria_de_momentos.md", "target": "evans \u2013 partial differential equations.md"}, {"source": "plan_algebra_de_lie.md", "target": "hall_lie_algebras.md"}, {"source": "hall_lie_algebras.md", "target": "plan_algebra_de_lie.md"}, {"source": "plan_espacios_cocientes.md", "target": "equivalence relations and quotient spaces \u2014 albert s. schwarz.md"}, {"source": "plan_espacios_cocientes.md", "target": "on quotient spaces \u2014 peter g. bergmann (1973).md"}, {"source": "plan_espacios_cocientes.md", "target": "quotient maps and configuration spaces of hard disks.md"}, {"source": "plan_espacios_cocientes.md", "target": "introduction to mechanics and symmetry - jerry e. marsden.md"}, {"source": "plan_espacios_cocientes.md", "target": "mathematics for theoretical physics \u2014 jean claude dutailly.md"}, {"source": "evans \u2013 partial differential equations.md", "target": "plan_teoria_de_momentos.md"}, {"source": "introduction to mechanics and symmetry - jerry e. marsden.md", "target": "plan_espacios_cocientes.md"}, {"source": "on quotient spaces \u2014 peter g. bergmann (1973).md", "target": "plan_espacios_cocientes.md"}, {"source": "federer \u2013 geometric measure theory.md", "target": "plan_teoria_de_momentos.md"}, {"source": "mathematics for theoretical physics \u2014 jean claude dutailly.md", "target": "plan_espacios_cocientes.md"}, {"source": "equivalence relations and quotient spaces \u2014 albert s. schwarz.md", "target": "plan_espacios_cocientes.md"}, {"source": "cohn \u2013 measure theory.md", "target": "plan_teoria_de_momentos.md"}, {"source": "quotient maps and configuration spaces of hard disks.md", "target": "plan_espacios_cocientes.md"}];
+            var colorGroups = [];
 
-    var width = window.innerWidth;
-    var height = window.innerHeight;
+            var width = window.innerWidth;
+            var height = window.innerHeight;
 
-    var svg = d3.select("#graph")
+            var svg = d3.select("#graph")
                 .append("svg")
                 .attr("width", width)
                 .attr("height", height);
 
-    var g = svg.append("g");
+            var g = svg.append("g");
 
-    var simulation = d3.forceSimulation(nodes)
-                       .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-                       .force("charge", d3.forceManyBody().strength(-300))
-                       .force("center", d3.forceCenter(width/2, height/2))
-                       .on("tick", ticked);
+            var zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on("zoom", zoomed);
 
-    var link = g.append("g")
+            svg.call(zoom);
+
+            function zoomed() {
+                g.attr("transform", d3.event.transform);
+            }
+
+            function customForce(alpha) {
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const strength = 0.05;
+
+                for (let i = 0; i < nodes.length; i++) {
+                    const node = nodes[i];
+                    node.vx += (centerX - node.x) * strength * alpha;
+                    node.vy += (centerY - node.y) * strength * alpha;
+                }
+            }
+
+            var simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
+                    const sourceLinks = links.filter(link => link.source.id === d.source.id || link.target.id === d.source.id).length;
+                    const targetLinks = links.filter(link => link.source.id === d.target.id || link.target.id === d.target.id).length;
+                    return Math.min(150, Math.max(50, (sourceLinks + targetLinks) * 10));
+                }))
+                .force("charge", d3.forceManyBody().strength(-300))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("custom", customForce)
+                .force("collision", labelCollision())
+                .alphaDecay(0.02)
+                .alphaMin(0.001)
+                .on("tick", ticked);
+
+            var link = g.append("g")
                 .attr("class", "links")
                 .selectAll("line")
                 .data(links)
-                .enter()
-                .append("line")
-                .attr("class","link");
+                .enter().append("line")
+                .attr("class", "link");
 
-    var node = g.append("g")
-                .attr("class","nodes")
-                .selectAll("g")
+            var node = g.append("g")
+                .attr("class", "nodes")
+                .selectAll("circle")
                 .data(nodes)
-                .enter()
-                .append("g")
+                .enter().append("circle")
+                .attr("class", "node")
+                .attr("r", d => 5 + Math.sqrt(d.link_count))
+                .attr("fill", d => d.color)
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
                     .on("end", dragended))
-                .on("click", function(event,d){
-                    if(!event.defaultPrevented){
-                        window.location.href = d.id; // link a tu archivo .md
+                .on("click", function(event, d) {
+                    if (!event.defaultPrevented) {
+                        window.location.href = d.id.replace(".md", ".html");
                     }
                 });
 
-    node.append("circle")
-        .attr("r", 15)
-        .attr("fill", d => d.color);
+            var text = g.append("g")
+                .attr("class", "texts")
+                .selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .attr("x", 8)
+                .attr("y", ".31em")
+                .text(d => d.label);
 
-    node.append("text")
-        .attr("x", 20)
-        .attr("y", 5)
-        .text(d => d.label);
+            function ticked() {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
 
-    function ticked(){
-      link.attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
 
-      node.attr("transform", d => `translate(${d.x},${d.y})`);
-    }
+                text
+                    .attr("x", d => d.x + 8)
+                    .attr("y", d => d.y + 3);
+            }
 
-    function dragstarted(d){
-      if(!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
+            function dragstarted(d) {
+                if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
 
-    function dragged(d){
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
+            function dragged(d) {
+                d.fx = d3.event.x;
+                d.fy = d3.event.y;
+            }
 
-    function dragended(d){
-      if(!d3.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
-  </script>
-</body>
-</html>
+            function dragended(d) {
+                if (!d3.event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+
+            function labelCollision() {
+                var alpha = 0.5;
+                return function() {
+                    for (var i = 0; i < nodes.length; i++) {
+                        for (var j = i + 1; j < nodes.length; j++) {
+                            var nodeA = nodes[i];
+                            var nodeB = nodes[j];
+                            if (nodeA === nodeB) continue;
+
+                            var dx = nodeA.x - nodeB.x;
+                            var dy = nodeA.y - nodeB.y;
+                            var distance = Math.sqrt(dx*dx + dy*dy);
+                            var minDistance = 20;
+
+                            if (distance < minDistance) {
+                                var moveFactor = (minDistance - distance) / distance * alpha;
+                                var mx = dx * moveFactor;
+                                var my = dy * moveFactor;
+                                nodeA.x += mx;
+                                nodeA.y += my;
+                                nodeB.x -= mx;
+                                nodeB.y -= my;
+                            }
+                        }
+                    }
+                };
+            }
+        </script>
+    </body>
+    </html>
+    
