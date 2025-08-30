@@ -14,32 +14,42 @@
   <div id="graph"></div>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script>
-    // Tus notas reales
+    // Nodos
     var nodes = [
-      {id: "Plan_Teoria_de_Momentos.md", label: "Plan Teoria de Momentos", color:"#ff6347"},
-      {id: "Plan_Algebra_de_Lie.md", label: "Plan Algebra de Lie", color:"#1e90ff"},
-      {id: "Plan_Espacios_Cocientes.md", label: "Plan Espacios Cocientes", color:"#32cd32"},
-      {id: "Evans – Partial Differential Equations.md", label: "Evans PDE", color:"#ffa500"},
-      {id: "Introduction to Mechanics and Symmetry - Jerry E. Marsden.md", label: "Introduction to Mechanics", color:"#00ced1"},
-      {id: "On Quotient Spaces — Peter G. Bergmann (1973).md", label: "On Quotient Spaces", color:"#ff69b4"},
-      {id: "Federer – Geometric Measure Theory.md", label: "Federer GMT", color:"#9370db"},
-      {id: "Mathematics for Theoretical Physics — Jean Claude Dutailly.md", label: "Mathematics for Theoretical Physics", color:"#7fff00"},
-      {id: "Equivalence Relations and Quotient Spaces — Albert S. Schwarz.md", label: "Equivalence Relations", color:"#ff4500"},
-      {id: "Cohn – Measure Theory.md", label: "Cohn Measure Theory", color:"#00fa9a"},
-      {id: "Quotient maps and configuration spaces of hard disks.md", label: "Quotient Maps", color:"#1e90ff"},
-      {id: "Hall_Lie_Algebras.md", label: "Hall Lie Algebras", color:"#f08080"}
+      {id:"plan_teoria_de_momentos.md", label:"Plan Teoría de Momentos", color:"#ff6347"},
+      {id:"plan_algebra_de_lie.md", label:"Plan Álgebra de Lie", color:"#1e90ff"},
+      {id:"hall_lie_algebras.md", label:"Hall Lie Algebras", color:"#32cd32"},
+      {id:"plan_espacios_cocientes.md", label:"Plan Espacios Cocientes", color:"#ffa500"},
+      {id:"evans – partial differential equations.md", label:"Evans PDE", color:"#ff69b4"},
+      {id:"introduction to mechanics and symmetry - jerry e. marsden.md", label:"Introduction Mechanics", color:"#8a2be2"},
+      {id:"on quotient spaces — peter g. bergmann (1973).md", label:"On Quotient Spaces", color:"#00ced1"},
+      {id:"federer – geometric measure theory.md", label:"Federer GMT", color:"#adff2f"},
+      {id:"mathematics for theoretical physics — jean claude dutailly.md", label:"Math Theoretical Physics", color:"#ff4500"},
+      {id:"equivalence relations and quotient spaces — albert s. schwarz.md", label:"Equivalence & Quotient Spaces", color:"#20b2aa"},
+      {id:"cohn – measure theory.md", label:"Cohn Measure Theory", color:"#ff1493"},
+      {id:"quotient maps and configuration spaces of hard disks.md", label:"Quotient Maps Hard Disks", color:"#7fff00"}
     ];
 
+    // Enlaces
     var links = [
-      {source: "Plan_Teoria_de_Momentos.md", target: "Cohn – Measure Theory.md"},
-      {source: "Plan_Teoria_de_Momentos.md", target: "Federer – Geometric Measure Theory.md"},
-      {source: "Plan_Teoria_de_Momentos.md", target: "Evans – Partial Differential Equations.md"},
-      {source: "Plan_Algebra_de_Lie.md", target: "Hall_Lie_Algebras.md"},
-      {source: "Plan_Espacios_Cocientes.md", target: "Equivalence Relations and Quotient Spaces — Albert S. Schwarz.md"},
-      {source: "Plan_Espacios_Cocientes.md", target: "On Quotient Spaces — Peter G. Bergmann (1973).md"},
-      {source: "Plan_Espacios_Cocientes.md", target: "Quotient maps and configuration spaces of hard disks.md"},
-      {source: "Plan_Espacios_Cocientes.md", target: "Introduction to Mechanics and Symmetry - Jerry E. Marsden.md"},
-      {source: "Plan_Espacios_Cocientes.md", target: "Mathematics for Theoretical Physics — Jean Claude Dutailly.md"}
+      {source:"plan_teoria_de_momentos.md", target:"cohn – measure theory.md"},
+      {source:"plan_teoria_de_momentos.md", target:"federer – geometric measure theory.md"},
+      {source:"plan_teoria_de_momentos.md", target:"evans – partial differential equations.md"},
+      {source:"plan_algebra_de_lie.md", target:"hall_lie_algebras.md"},
+      {source:"hall_lie_algebras.md", target:"plan_algebra_de_lie.md"},
+      {source:"plan_espacios_cocientes.md", target:"equivalence relations and quotient spaces — albert s. schwarz.md"},
+      {source:"plan_espacios_cocientes.md", target:"on quotient spaces — peter g. bergmann (1973).md"},
+      {source:"plan_espacios_cocientes.md", target:"quotient maps and configuration spaces of hard disks.md"},
+      {source:"plan_espacios_cocientes.md", target:"introduction to mechanics and symmetry - jerry e. marsden.md"},
+      {source:"plan_espacios_cocientes.md", target:"mathematics for theoretical physics — jean claude dutailly.md"},
+      {source:"evans – partial differential equations.md", target:"plan_teoria_de_momentos.md"},
+      {source:"introduction to mechanics and symmetry - jerry e. marsden.md", target:"plan_espacios_cocientes.md"},
+      {source:"on quotient spaces — peter g. bergmann (1973).md", target:"plan_espacios_cocientes.md"},
+      {source:"federer – geometric measure theory.md", target:"plan_teoria_de_momentos.md"},
+      {source:"mathematics for theoretical physics — jean claude dutailly.md", target:"plan_espacios_cocientes.md"},
+      {source:"equivalence relations and quotient spaces — albert s. schwarz.md", target:"plan_espacios_cocientes.md"},
+      {source:"cohn – measure theory.md", target:"plan_teoria_de_momentos.md"},
+      {source:"quotient maps and configuration spaces of hard disks.md", target:"plan_espacios_cocientes.md"}
     ];
 
     var width = window.innerWidth;
@@ -52,20 +62,30 @@
 
     var g = svg.append("g");
 
+    // Zoom
+    var zoom = d3.zoom()
+                 .scaleExtent([0.1, 4])
+                 .on("zoom", function(event){ g.attr("transform", event.transform); });
+
+    svg.call(zoom);
+
+    // Fuerza
     var simulation = d3.forceSimulation(nodes)
-                       .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                       .force("link", d3.forceLink(links).id(d=>d.id).distance(150))
                        .force("charge", d3.forceManyBody().strength(-300))
-                       .force("center", d3.forceCenter(width/2, height/2))
+                       .force("center", d3.forceCenter(width/2,height/2))
                        .on("tick", ticked);
 
+    // Líneas
     var link = g.append("g")
-                .attr("class", "links")
+                .attr("class","links")
                 .selectAll("line")
                 .data(links)
                 .enter()
                 .append("line")
                 .attr("class","link");
 
+    // Nodos
     var node = g.append("g")
                 .attr("class","nodes")
                 .selectAll("g")
@@ -78,43 +98,40 @@
                     .on("end", dragended))
                 .on("click", function(event,d){
                     if(!event.defaultPrevented){
-                        window.location.href = d.id; // abre tu archivo .md
+                        window.location.href = d.id.replace(".md",".html"); // abrir el HTML correspondiente
                     }
                 });
 
     node.append("circle")
         .attr("r", 15)
-        .attr("fill", d => d.color);
+        .attr("fill", d=>d.color);
 
     node.append("text")
         .attr("x", 20)
         .attr("y", 5)
-        .text(d => d.label);
+        .text(d=>d.label);
 
     function ticked(){
-      link.attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
+      link.attr("x1", d=>d.source.x)
+          .attr("y1", d=>d.source.y)
+          .attr("x2", d=>d.target.x)
+          .attr("y2", d=>d.target.y);
 
-      node.attr("transform", d => `translate(${d.x},${d.y})`);
+      node.attr("transform", d=>`translate(${d.x},${d.y})`);
     }
 
     function dragstarted(d){
       if(!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
+      d.fx=d.x; d.fy=d.y;
     }
 
     function dragged(d){
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
+      d.fx=d3.event.x; d.fy=d3.event.y;
     }
 
     function dragended(d){
       if(!d3.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
+      d.fx=null; d.fy=null;
     }
   </script>
 </body>
